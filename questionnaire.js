@@ -24,7 +24,8 @@
   const SOURCES = ['instagram', 'tiktok'];
   const ctx = {
     source: SOURCES.includes(qs.get('src')) ? qs.get('src') : (qs.get('src') ? 'autre' : 'instagram'),
-    mot_cle: propre(qs.get('mot') || (TYPE === 'claude' ? 'claude' : ''), 40).toLowerCase() || null,
+    // Le mot-clé vient du lien (?mot=), sinon de la page elle-même (data-mot sur la balise script)
+    mot_cle: propre(qs.get('mot') || (script && script.dataset.mot) || (TYPE === 'claude' ? 'claude' : ''), 40).toLowerCase() || null,
     video_id: propre(qs.get('v'), 64) || null,
     commentateur: propre(qs.get('c'), 64) || null,
     variante: /^[A-Z0-9_-]{1,12}$/.test((qs.get('var') || '').toUpperCase()) ? qs.get('var').toUpperCase() : 'A',
@@ -246,7 +247,8 @@
     let html = `<div class="qx-ok">${TYPE === 'ressource' ? 'C\'est bon, ta ressource est juste en dessous' : 'C\'est noté, merci pour tes réponses'}</div>`;
     if (b === 'A' && TYPE === 'ressource') {
       const d = rep.douleur && rep.douleur !== 'autre' ? ` Ce qui me prend le plus de temps : ${libelle(D.Q.douleur.choix, rep.douleur)}.` : '';
-      const msg = `Salut ! Je viens de la vidéo « ${(ctx.mot_cle || '').toUpperCase()} ». Je veux mon plan d'automatisation perso.${d}`;
+      const video = ctx.mot_cle ? `de la vidéo « ${ctx.mot_cle.toUpperCase()} »` : 'de ta vidéo';
+      const msg = `Salut ! Je viens ${video}. Je veux mon plan d'automatisation perso.${d}`;
       html += `<div class="qx-cta"><span class="qx-pill">Offert</span><h2 class="qx-h2">Ton plan d'automatisation, <span>fait pour ton business</span></h2>
         <p>Écris-nous sur WhatsApp. On te pose 3 questions sur ton activité, puis on t'envoie ton plan perso : les tâches que Claude peut faire à ta place, dans quel ordre, et comment les mettre en place.</p>
         <a class="qx-wa" data-clic="whatsapp" href="https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">💬 Je veux mon plan sur WhatsApp</a></div>`;
