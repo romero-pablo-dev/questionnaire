@@ -177,8 +177,38 @@
   function remonter() { const y = racine.getBoundingClientRect().top + window.scrollY - 16; if (window.scrollY > y) window.scrollTo(0, Math.max(0, y)); }
   function relancerAnimation() { zone.classList.remove('qx-ecran'); void zone.offsetWidth; zone.classList.add('qx-ecran'); }
   function suivant(id) { const c = D.chemin(rep), i = c.indexOf(id); return i + 1 < c.length ? c[i + 1] : 'fin'; }
+  // Le @ Instagram, seulement quand le lien ne dit pas qui c'est (envoi à la main).
+  // Quand l'outil d'envoi met ?c= dans le lien, cet écran n'apparaît plus.
+  let pseudoDemande = false;
+  function demanderPseudo() {
+    pseudoDemande = true;
+    racine.querySelector('.qx-barre i').style.width = '96%';
+    racine.querySelector('.qx-etape').textContent = 'Dernière étape';
+    relancerAnimation(); remonter();
+    zone.innerHTML = `<h1 class="qx-h1">Dernière chose : ton <span>@ Instagram</span> ?</h1>
+      <p class="qx-sous">Comme ça, on sait que c'est toi quand on te répond.</p>
+      <label class="qx-champ"><span>@</span><input type="text" id="qx-pseudo" inputmode="text" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="31" placeholder="ton_pseudo"></label>
+      <p class="qx-erreur" id="qx-erreur" role="alert"></p>
+      <button type="button" class="qx-go" id="qx-valider">${TYPE === 'ressource' ? 'Voir ma ressource' : 'Voir la suite'}</button>
+      <div class="qx-ligne"><button type="button" class="qx-retour">‹ Retour</button><button type="button" class="qx-retour" id="qx-passer">Passer</button></div>`;
+    const champ = zone.querySelector('#qx-pseudo'), erreur = zone.querySelector('#qx-erreur');
+    const valider = () => {
+      const p = champ.value.trim().replace(/^@+/, '').toLowerCase();
+      if (!p) { erreur.textContent = 'Écris ton @, ou touche « Passer ».'; return; }
+      if (!/^[a-z0-9._]{1,30}$/.test(p)) { erreur.textContent = 'Un @ Instagram : lettres, chiffres, points et tirets bas.'; return; }
+      ctx.commentateur = p;
+      envoyer('reponse', 'pseudo', { v: p });
+      fin(true);
+    };
+    champ.oninput = () => { erreur.textContent = ''; };
+    champ.onkeydown = e => { if (e.key === 'Enter') valider(); };
+    zone.querySelector('#qx-valider').onclick = valider;
+    zone.querySelector('#qx-passer').onclick = () => { envoyer('clic', 'pseudo_passe', null); fin(true); };
+    zone.querySelector('.qx-retour').onclick = () => { pseudoDemande = false; afficher(pile.pop()); };
+  }
+
   function afficher(id) {
-    if (id === 'fin') return fin(true);
+    if (id === 'fin') return (!ctx.commentateur && !pseudoDemande) ? demanderPseudo() : fin(true);
     progression(id); relancerAnimation();
     remonter();
     const q = D.Q[id];

@@ -26,6 +26,12 @@
 #qx .qx-go{display:block;width:100%;margin-top:16px;border:0;border-radius:18px;padding:17px;cursor:pointer;background:var(--qx-noir);color:#fff;font:800 20px "Inter Tight",sans-serif;letter-spacing:-.02em}
 #qx .qx-go:disabled{opacity:.35;cursor:not-allowed}
 #qx .qx-retour{background:none;border:0;color:var(--qx-gris-clair);font:13px "DM Mono",monospace;margin-top:16px;cursor:pointer;padding:0}
+#qx .qx-champ{display:flex;align-items:center;gap:6px;background:var(--qx-panneau);border:1.5px solid var(--qx-bord);border-radius:16px;padding:0 14px;box-shadow:0 14px 30px -20px rgba(70,40,30,.45)}
+#qx .qx-champ:focus-within{border-color:var(--qx-orange)}
+#qx .qx-champ span{font:700 19px Inter,sans-serif;color:var(--qx-gris-clair)}
+#qx .qx-champ input{flex:1;min-width:0;border:0;outline:0;background:transparent;padding:16px 0;font:600 18px Inter,sans-serif;color:var(--qx-noir)}
+#qx .qx-erreur{min-height:18px;margin:8px 2px 0;font-size:13px;color:#b02a37}
+#qx .qx-ligne{display:flex;justify-content:space-between}
 #qx .qx-ok{display:flex;align-items:center;gap:9px;font:700 16px Inter,sans-serif;color:var(--qx-vert);margin:6px 0 14px}
 #qx .qx-ok::before{content:"✓";display:inline-grid;place-items:center;width:24px;height:24px;border-radius:24px;background:var(--qx-vert);color:#fff;font-size:14px;flex:none}
 #qx .qx-cta{background:var(--qx-noir);color:#fff;border-radius:22px;padding:20px 18px;margin:0 0 14px;box-shadow:0 30px 60px -30px rgba(22,11,8,.6)}
