@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#EAD4C6">
+<title>20 connecteurs pour Claude · pabloetlucas</title>
+<meta name="description" content="Les 20 connecteurs (MCP) à brancher sur Claude pour ton business, et comment installer chacun en quelques clics.">
+<meta property="og:title" content="20 connecteurs pour Claude">
+<meta property="og:description" content="Recherche, navigateur, automatisations, ventes : les connecteurs qui font agir Claude à ta place, et comment les brancher.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@800&family=Inter:wght@500;600;700&family=DM+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../questionnaire.css">
+<script src="../questionnaire.js" data-questionnaire="ressource" data-contenu=".wrap" data-mot="mcp" defer></script>
+<style>
+:root{
+  --orange:#C64902; --orange-vif:#F07A3A; --noir:#160b08; --gris:#5d5560; --gris-clair:#8d878f;
+  --panneau:#FAFAF8; --entete:#F3F2F0; --bord:rgba(30,20,30,.08); --vert:#0a8a5f; --rouge:#cd1e3e;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;background-color:#EAD4C6}
+body{margin:0;color:var(--noir);font:500 17px/1.55 Inter,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh;
+  background-color:#EAD4C6;
+  background-image:
+    radial-gradient(ellipse 700px 560px at 0 0,rgba(240,195,170,.7),transparent 70%),
+    radial-gradient(ellipse 700px 700px at 100% 55%,rgba(232,200,190,.5),transparent 70%),
+    linear-gradient(160deg,#F7F2EC,#EFEAE6)}
+body{position:relative}
+body::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(60,40,30,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(60,40,30,.05) 1px,transparent 1px);
+  background-size:60px 60px}
+.wrap{position:relative;max-width:720px;margin:0 auto;padding:34px 20px 0}
+h1{font:800 clamp(48px,13vw,86px)/1 "Inter Tight",sans-serif;letter-spacing:-.045em;margin:18px 0 14px}
+h1 span,.t span{color:var(--orange)}
+.chapo{color:var(--gris);font-size:18px;margin:0 0 10px}
+.chapo b{color:var(--noir)}
+.chiffres{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:24px 0 8px}
+.chiffres div{background:var(--panneau);border-radius:16px;padding:15px 11px;box-shadow:0 14px 30px -18px rgba(70,40,30,.35);border:1.5px solid var(--bord)}
+.chiffres b{display:block;font:800 clamp(26px,7.4vw,36px)/1 "Inter Tight",sans-serif;letter-spacing:-.05em;color:var(--orange)}
+.chiffres span{display:block;font-size:12.5px;line-height:1.3;color:var(--gris);margin-top:5px}
+.pan{background:var(--panneau);border:1.5px solid var(--bord);border-radius:20px;overflow:hidden;margin:18px 0;
+  box-shadow:0 34px 64px -34px rgba(70,40,30,.34),0 8px 20px -12px rgba(70,40,30,.12)}
+.hd{background:var(--entete);border-bottom:1.5px solid rgba(30,20,30,.06);padding:13px 20px;font:13.5px "DM Mono",monospace;
+  color:#69676e;display:flex;gap:8px;align-items:center}
+.hd i{width:10px;height:10px;border-radius:10px;background:#d2d0d4;display:inline-block;flex:none}
+.hd em{font-style:normal;margin-left:8px}
+.hd .badge{margin-left:auto;background:rgba(198,73,2,.1);color:var(--orange);border-radius:999px;padding:2px 10px;font-size:12px;white-space:nowrap}
+.bd{padding:20px 20px 22px}
+.t{font:800 clamp(26px,7vw,36px)/1.04 "Inter Tight",sans-serif;letter-spacing:-.04em;margin:0 0 10px}
+.bd p{margin:0 0 12px;color:#3d363f}
+.bd ul{margin:6px 0 0;padding:0;list-style:none}
+.bd li{position:relative;padding-left:22px;margin:0 0 12px;color:#3d363f}
+.bd li::before{content:"›";position:absolute;left:4px;top:-1px;color:var(--orange);font:600 18px "DM Mono",monospace}
+.bd li b{color:var(--noir)}
+h3{font:700 15.5px Inter,sans-serif;margin:20px 0 6px}
+code{font:.86em "DM Mono",monospace;background:rgba(30,20,30,.06);padding:1px 6px;border-radius:5px;overflow-wrap:anywhere}
+.cmd{position:relative;background:var(--entete);border:1.5px solid var(--bord);border-radius:12px;margin:10px 0}
+.cmd pre{margin:0;padding:42px 16px 15px;font:14px/1.65 "DM Mono",monospace;color:var(--noir);white-space:pre-wrap;overflow-wrap:anywhere}
+.cmd button{position:absolute;top:8px;right:8px;background:var(--noir);color:#fff;border:0;border-radius:8px;cursor:pointer;
+  font:12px "DM Mono",monospace;padding:6px 11px}
+.cmd button.ok{background:var(--vert)}
+.note{font-size:14.5px;color:var(--gris)!important}
+a{color:var(--orange);text-decoration:none;font-weight:600;border-bottom:1.5px solid rgba(198,73,2,.3)}
+a:hover{border-bottom-color:var(--orange)}
+.cta{background:rgba(255,255,255,.88);border:1.5px solid rgba(198,73,2,.2);border-radius:22px;padding:24px 22px;margin:26px 0;box-shadow:0 30px 60px -34px rgba(198,73,2,.45)}
+.cta h2{font:800 clamp(28px,7.6vw,42px)/1.02 "Inter Tight",sans-serif;letter-spacing:-.04em;margin:0 0 12px}
+.cta h2 span{color:var(--orange)}
+.cta p{color:var(--gris);margin:0 0 14px}
+.cta b{color:var(--noir)}
+.bulle{display:inline-block;background:var(--orange);color:#fff;font-weight:700;font-size:18px;padding:11px 24px;border-radius:20px 20px 5px 20px}
+.inter{font:800 clamp(28px,7.6vw,42px)/1.04 "Inter Tight",sans-serif;letter-spacing:-.04em;margin:40px 0 4px}
+.inter span{color:var(--orange)}
+.piege{border-color:rgba(205,30,62,.25)}
+.piege .hd{background:rgba(205,30,62,.06);color:var(--rouge)}
+.piege .hd i{background:rgba(205,30,62,.35)}
+.co{border-top:1.5px solid rgba(30,20,30,.06);padding:16px 0 4px}
+.co:first-of-type{border-top:0;padding-top:0}
+.co h4{display:flex;align-items:baseline;gap:10px;margin:0 0 4px;font:800 21px/1.2 "Inter Tight",sans-serif;letter-spacing:-.03em}
+.co h4 small{font:13px "DM Mono",monospace;color:var(--orange)}
+.co p{margin:0 0 8px}
+.co .how{font-size:14.5px;color:var(--gris);margin:0 0 8px}
+.co .how b{color:var(--noir)}
+.tag{display:inline-block;font:11.5px "DM Mono",monospace;letter-spacing:.5px;text-transform:uppercase;border-radius:999px;padding:2px 9px;margin-right:6px;vertical-align:1px}
+.tag.rep{background:rgba(10,138,95,.1);color:var(--vert)}
+.tag.lien{background:rgba(198,73,2,.1);color:var(--orange)}
+.tag.ext{background:rgba(60,60,160,.1);color:#3c3ca0}
+.tag.cc{background:rgba(22,11,8,.08);color:var(--noir)}
+footer{position:relative;padding:36px 20px 56px;text-align:center;font-size:13.5px;color:var(--gris-clair)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>20 connecteurs<br><span>pour Claude</span></h1>
+  <p class="chapo">Un connecteur (on dit aussi <b>MCP</b>) branche Claude sur un outil que tu utilises déjà. Au lieu de te répondre, Claude <b>agit</b>&nbsp;: il cherche sur le web, lit tes mails, remplit ton CRM, prépare tes visuels. Voilà les 20 qu'on te conseille, et comment brancher chacun.</p>
+  <div class="chiffres">
+    <div><b>20</b><span>connecteurs triés pour ton business</span></div>
+    <div><b>16</b><span>dans le répertoire officiel de Claude</span></div>
+    <div><b>2 min</b><span>pour en brancher un</span></div>
+  </div>
+</header>
+
+<section class="pan">
+  <div class="hd"><i></i><i></i><i></i><em>comment on branche</em></div>
+  <div class="bd">
+    <p class="t">Trois façons, <span>selon le connecteur</span></p>
+    <ul>
+      <li><span class="tag rep">répertoire</span><b>Le répertoire officiel.</b> Dans l'appli Claude, va dans <b>Customize</b>, puis <b>Connectors</b>. Cherche le nom, clique sur <b>Connect</b> et connecte ton compte. C'est tout.</li>
+      <li><span class="tag lien">lien</span><b>Un lien à coller.</b> Même endroit, choisis <b>Add custom connector</b>, donne un nom, colle le lien donné plus bas, puis <b>Add</b> et <b>Connect</b>.</li>
+      <li><span class="tag ext">extension</span><span class="tag cc">Claude Code</span><b>Le reste</b>&nbsp;: une extension Chrome, ou une commande pour ceux qui utilisent Claude Code. C'est indiqué à chaque fois.</li>
+    </ul>
+    <p class="note">L'appli Claude sur ordinateur est la plus simple pour tout ça. Si ton Claude est en français, les menus s'appellent Personnaliser et Connecteurs.</p>
+  </div>
+</section>
+
+<section class="pan">
+  <div class="hd"><i></i><i></i><i></i><em>le prompt</em><span class="badge">5 min</span></div>
+  <div class="bd">
+    <p class="t">Tu ne sais pas <span>par lequel commencer&nbsp;?</span></p>
+    <p>Colle ça dans Claude, il choisit avec toi&nbsp;:</p>
+    <div class="cmd"><pre>Je veux brancher des connecteurs sur Claude pour mon business. Pose moi d'abord 5 questions courtes sur mon activité, les outils que j'utilise chaque jour et les tâches qui me prennent le plus de temps. Ensuite, dans cette liste, choisis les 3 connecteurs qui me feront gagner le plus de temps et explique moi pourquoi en une phrase chacun : Perplexity, Exa, Firecrawl, Apify, Claude dans Chrome, Playwright, Composio, Zapier, Make, Gmail, Google Calendar, Google Drive, Notion, Calendly, Fireflies, HubSpot, Stripe, Qonto, Brevo, Canva. Puis guide moi pas à pas pour brancher le premier, et propose moi une première tâche concrète à lui confier.</pre></div>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>Et si ta création de contenu <span>tournait avec Claude&nbsp;?</span></h2>
+  <p>Idées, scripts, montage&nbsp;: on installe sur ton Claude la méthode qu'on utilise pour nos propres vidéos, et on t'accompagne jusqu'à ce que tu sois à l'aise avec ces automatisations. Réponds <b>«&nbsp;CRÉATION&nbsp;»</b> au message qu'on t'a envoyé, on te répond directement.</p>
+  <span class="bulle">CRÉATION</span>
+</section>
+
+<p class="inter">Les 20,<br><span>un par un.</span></p>
+
+<section class="pan">
+  <div class="hd"><i></i><i></i><i></i><em>chercher et surveiller</em><span class="badge">1 à 4</span></div>
+  <div class="bd">
+    <div class="co">
+      <h4><small>01</small>Perplexity</h4>
+      <p>Des recherches à jour sur tout le web, avec les sources. Pratique pour une veille marché ou vérifier un chiffre avant de le publier.</p>
+      <p class="how"><span class="tag lien">lien</span>Add custom connector, nom <b>Perplexity</b>, lien&nbsp;:</p>
+      <div class="cmd"><pre>https://api.perplexity.ai/mcp</pre></div>
+      <p class="how">Tu te connectes avec ton compte Perplexity. Les recherches sont facturées à l'usage par Perplexity (son offre API, pas l'abonnement classique).</p>
+    </div>
+    <div class="co">
+      <h4><small>02</small>Exa</h4>
+      <p>Un moteur de recherche fait pour l'IA. Claude va voir ce que vendent tes concurrents et ce que leurs clients disent d'eux, sources à l'appui.</p>
+      <p class="how"><span class="tag rep">répertoire</span>cherche <b>Exa</b>.</p>
+    </div>
+    <div class="co">
+      <h4><small>03</small>Firecrawl</h4>
+      <p>Tu donnes un site à Claude, il lit les pages et te rend le contenu en texte propre&nbsp;: une page de vente, un catalogue, une FAQ à analyser.</p>
+      <p class="how"><span class="tag rep">répertoire</span>cherche <b>Firecrawl</b>.</p>
+    </div>
+    <div class="co">
+      <h4><small>04</small>Apify</h4>
+      <p>Des yeux sur les réseaux. Claude récupère les vidéos de tes concurrents sur Instagram, TikTok ou YouTube et te dit lesquelles ont vraiment cartonné.</p>
+      <p class="how"><span class="tag rep">répertoire</span>cherche <b>Apify</b>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pan">
+  <div class="hd"><i></i><i></i><i></i><em>agir dans ton navigateur</em><span class="badge">5 et 6</span></div>
+  <div class="bd">
+    <div class="co">
+      <h4><small>05</small>Claude dans Chrome</h4>
+      <p>Des mains dans ton navigateur, avec tes propres comptes. Il remplit tes fiches, tes formulaires, ton agenda, et tu valides avant que quoi que ce soit parte.</p>
+      <p class="how"><span class="tag ext">extension</span>installe l'extension <b>Claude</b> depuis <a href="https://claude.com/chrome">claude.com/chrome</a>, puis connecte ton compte Claude.</p>
+    </div>
+    <div class="co">
+      <h4><small>06</small>Playwright</h4>
+      <p>Un navigateur que Claude pilote seul&nbsp;: il ouvre des pages, remplit des formulaires, fait des captures d'écran et teste les sites qu'il a construits.</p>
+      <p class="how"><span class="tag cc">Claude Code</span>dans ton terminal&nbsp;:</p>
+      <div class="cmd"><pre>claude mcp add playwright npx @playwright/mcp@latest</pre></div>
+      <p class="how">Tu n'utilises pas Claude Code&nbsp;? Prends Claude dans Chrome, il fait la même chose avec tes comptes.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pan">
+  <div class="hd"><i></i><i></i><i></i><em>relier tous tes outils</em><span class="badge">7 à 9</span></div>
+  <div class="bd">
+    <div class="co">
+      <h4><small>07</small>Composio</h4>
+      <p>Un seul connecteur qui en ouvre plus de mille&nbsp;: Gmail, Notion, Slack, GitHub, HubSpot… Claude te demande l'accès à une appli la première fois qu'il en a besoin.</p>
+      <p class="how"><span class="tag lien">lien</span>Add custom connector, nom <b>Composio</b>, lien&nbsp;:</p>
+      <div class="cmd"><pre>https://connect.composio.dev/mcp</pre></div>
+    </div>
+    <div class="co">
+      <h4><small>08</small>Zapier</h4>
+      <p>Si tu as déjà des automatisations Zapier, Claude peut les lancer et agir dans les milliers d'applis qu'il relie.</p>
+      <p class="how"><span class="tag rep">répertoire</span>cherche <b>Zapier</b>.</p>
+    </div>
+    <div class="co">
+      <h4><small>09</small>Make</h4>
+      <p>Pareil pour ceux qui sont sur Make&nbsp;: Claude déclenche tes scénarios au lieu que tu les lances à la main.</p>
+      <p class="how"><span class="tag rep">répertoire</span>cherche <b>Make</b>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pan">
+  <div class="hd"><i></i><i></i><i></i><em>ton quotidien</em><span class="badge">10 à 15</span></div>
+  <div class="bd">
+    <div class="co">
+      <h4><small>10</small>Gmail</h4>
+      <p>Claude trie ta boîte, résume ce qui compte et prépare les brouillons de réponse. Tu relis, tu envoies.</p>
+      <p class="how"><span class="tag rep">répertoire</span>cherche <b>Gmail</b>.</p>
+    </div>
+    <div class="co">
+      <h4><small>11</small>Google Calendar</h4>
+      <p>Il lit ton agenda, trouve un créneau, te prépare la journée de demain.</p>
+      <p class="how"><span class="tag rep">répertoire</span>cherche <b>Google Calendar</b>.</p>
+    </div>
+    <div class="co">
+      <h4><small>12</small>Google Drive</h4>
+      <p>Il retrouve un document, lit tes contrats ou tes présentations et s'en sert pour te répondre.</p>
+      <p class="how"><span class="tag rep">répertoire</span>cherche <b>Google Drive</b>.</p>
+    </div>
+    <div class="co">
+      <h4><small>13</small>Notion</h4>
+      <p>Il lit et met à jour tes pages et tes bases&nbsp;: suivi clients, calendrier de contenu, notes.</p>
+      <p class="how"><span class="tag rep">répertoire</span>cherche <b>Notion</b>.</p>
+    </div>
+    <div class="co">
+      <h4><small>14</small>Calendly</h4>
+      <p>Il voit tes rendez-vous à venir et prépare chaque appel avant que tu le prennes.</p>
+      <p class="how"><span class="tag rep">répertoire</span>cherche <b>Calendly</b>.</p>
+    </div>
+    <div class="co">
+      <h4><small>15</small>Fireflies</h4>
+      <p>Les comptes rendus de tes appels. Claude retrouve ce qu'un client t'a dit et en tire la suite à donner.</p>
+      <p class="how"><span class="tag rep">répertoire</span>cherche <b>Fireflies</b>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pan">
+  <div class="hd"><i></i><i></i><i></i><em>vendre et encaisser</em><span class="badge">16 à 19</span></div>
+  <div class="bd">
+    <div class="co">
+      <h4><small>16</small>HubSpot</h4>
+      <p>Ton CRM tenu à jour&nbsp;: Claude ajoute les contacts, note où en est chaque prospect et te dit qui relancer.</p>
+      <p class="how"><span class="tag rep">répertoire</span>cherche <b>HubSpot</b>.</p>
+    </div>
+    <div class="co">
+      <h4><small>17</small>Stripe</h4>
+      <p>Tes ventes en une question&nbsp;: ce qui est encaissé, ce qui est en attente, tes meilleurs clients.</p>
+      <p class="how"><span class="tag rep">répertoire</span>cherche <b>Stripe</b>.</p>
+    </div>
+    <div class="co">
+      <h4><small>18</small>Qonto</h4>
+      <p>Ton compte pro&nbsp;: Claude suit tes encaissements, retrouve une transaction, prépare tes factures.</p>
+      <p class="how"><span class="tag rep">répertoire</span>cherche <b>Qonto</b>.</p>
+    </div>
+    <div class="co">
+      <h4><small>19</small>Brevo</h4>
+      <p>Tes emails et ta liste de contacts&nbsp;: Claude prépare une campagne et te montre qui a ouvert.</p>
+      <p class="how"><span class="tag rep">répertoire</span>cherche <b>Brevo</b>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pan">
+  <div class="hd"><i></i><i></i><i></i><em>créer</em><span class="badge">20</span></div>
+  <div class="bd">
+    <div class="co">
+      <h4><small>20</small>Canva</h4>
+      <p>Claude crée tes visuels, tes carrousels ou tes présentations directement dans ton compte Canva, prêts à retoucher.</p>
+      <p class="how"><span class="tag rep">répertoire</span>cherche <b>Canva</b>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pan piege">
+  <div class="hd"><i></i><i></i><i></i><em>les deux pièges</em></div>
+  <div class="bd">
+    <ul>
+      <li><b>N'active pas tout d'un coup.</b> Chaque connecteur ajoute des outils que Claude doit lire. Branche ceux dont tu te sers vraiment, et désactive les autres dans le même menu.</li>
+      <li><b>Garde la main sur ce qui part.</b> Quand Claude veut envoyer un mail, payer ou publier, il te demande d'abord. Lis avant d'accepter, surtout au début.</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+<footer>pabloetlucas · chaque connecteur appartient à son éditeur</footer>
+<script>
+document.querySelectorAll('.cmd').forEach(function(bloc){
+  var b = document.createElement('button');
+  b.textContent = 'copier';
+  b.addEventListener('click', function(){
+    var t = bloc.querySelector('pre').innerText;
+    navigator.clipboard.writeText(t).then(function(){
+      b.textContent = 'copié'; b.classList.add('ok');
+      setTimeout(function(){ b.textContent = 'copier'; b.classList.remove('ok'); }, 1600);
+    });
+  });
+  bloc.appendChild(b);
+});
+</script>
+</body>
+</html>
