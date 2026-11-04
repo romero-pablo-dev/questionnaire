@@ -1,0 +1,11 @@
+# Site go.floxatek.com (Netlify, publié à chaque push sur main).
+# Pas de build : les fichiers du dépôt sont servis tels quels.
+[build]
+  publish = "."
+
+# La racine affiche directement la page bio (le lien reste go.floxatek.com, ?src= compris).
+[[redirects]]
+  from = "/"
+  to = "/creation/"
+  status = 200
+  force = true
