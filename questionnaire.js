@@ -356,7 +356,7 @@
           <li><i>✓</i><span><b>On t'accompagne</b> jusqu'à ce que tu sois visible avec ton activité et à l'aise avec ces automatisations</span></li>
         </ul>
         <p class="qx-methode">Tout tourne sur <b>ton</b> Claude, avec la méthode qu'on utilise pour nos propres vidéos.</p>
-        <div class="qx-humain"><img src="${PHOTO}" alt="" width="34" height="34"><p>En appel, on regarde <em>ta situation</em> et si on est les bons pour t'aider. Tu parles directement à Pablo ou Lucas.</p></div>
+        <div class="qx-humain"><img src="${PHOTO}" alt="" width="34" height="34"><p>En appel, on regarde <em>ta situation</em> et si on est les bons pour t'aider. Tu parles directement à l'un de nous deux.</p></div>
         <a class="qx-wa qx-appel" data-clic="appel" href="${appel}" target="_blank" rel="noopener"><span>Réserver mon appel</span><i aria-hidden="true">→</i></a>
         <p class="qx-sous-cta">30 min en visio · sans engagement</p>
         <div class="qx-timide"><p>Pas envie d'un appel ? Une question ? Écris-nous <b>CRÉATION</b> en DM, on te répond directement.</p>
