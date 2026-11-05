@@ -269,22 +269,42 @@
     zone.querySelector('.qx-retour').onclick = () => reculer(() => afficher(pile.pop()));
   }
 
-  // ---- « On analyse tes réponses » (court, pour la tension avant le résultat) ----
+  // ---- « On analyse tes réponses » : chaque ligne reprend une vraie réponse, pour que le plan sente le sur-mesure ----
+  const SITUATION = { vend: 'tu vends déjà', sans_clients: 'lancé, pas encore de clients', offre_prete: 'offre prête, il manque les clients',
+    idee: 'une idée, pas encore d\'offre', aucune_idee: 'tout est à lancer' };
+  const RYTHME = { souvent: 'plusieurs fois par semaine', parfois: 'quand tu as le temps', pas_encore: 'pas encore lancé' };
+  const IA = { payant: 'abonnement payant ✓', gratuit: 'version gratuite', autre_ia: 'une autre IA pour l\'instant', peu: 'presque pas d\'IA' };
+  const liste = (id, k) => { const t = (rep[id] || []).map(v => (Q[id].choix.find(c => c[0] === v) || [])[k]).filter(Boolean);
+    return t.length ? t.slice(0, 2).join(', ') + (t.length > 2 ? '…' : '') : 'autre chose'; };
   function analyser() {
     const p = profil(rep);
-    const lignes = p === 'school' ? ['Tes réponses', 'Ton niveau', 'La suite pour toi']
-      : p === 'surmesure' ? ['Ta situation', 'Ce que tu veux automatiser', 'La bonne porte pour toi']
-      : ['Ta situation', 'Ce qui te bloque', 'Ce qu\'on peut automatiser pour toi'];
+    const lignes = p === 'school'
+      ? [['Ce que tu cherches', rep.priorite === 'apprendre' ? 'apprendre Claude' : 'te lancer avec Claude'], ['Ton projet', SITUATION[rep.projet] || 'en réflexion'], ['La suite pour toi', 'prête']]
+      : [['Ta situation', SITUATION[rep.activite || rep.projet] || 'notée'],
+         ['Ton rythme sur les réseaux', RYTHME[rep.reseaux] || 'noté'],
+         p === 'surmesure' ? ['Ce que tu veux automatiser', liste('besoins', 2).toLowerCase()] : ['Ce qui te bloque', liste('freins', 3)],
+         ['Ton Claude', IA[rep.claude] || 'noté'],
+         [p === 'surmesure' ? 'La bonne porte pour toi' : 'Ton plan de création', 'prêt']];
     entete(100, 'Analyse');
     relancerAnimation(); remonter();
-    zone.innerHTML = `<h1 class="qx-h1">On analyse tes <span>réponses</span>…</h1><ul class="qx-analyse">${lignes.map(l => `<li>${l}</li>`).join('')}</ul>`;
-    const pas = CALME ? 150 : 600;
-    // une ligne à la fois : elle pulse pendant qu'on « l'analyse », puis se coche
+    zone.innerHTML = `<h1 class="qx-h1">On analyse tes <span>réponses</span>…</h1>
+      <div class="qx-jauge"><i></i><b>0 %</b></div>
+      <ul class="qx-analyse">${lignes.map(([l, r]) => `<li><span>${l}</span><em>${r}</em></li>`).join('')}</ul>`;
+    const pas = CALME ? 150 : 780, total = pas * (lignes.length + 1) + 350;
+    // une ligne à la fois : elle pulse pendant qu'on « l'analyse », puis se coche et affiche ce qu'on a retenu
     zone.querySelectorAll('.qx-analyse li').forEach((li, i) => {
-      setTimeout(() => li.classList.add('qx-actif'), pas * i + 150);
-      setTimeout(() => { li.classList.remove('qx-actif'); li.classList.add('qx-fait'); }, pas * (i + 1) + 150);
+      setTimeout(() => li.classList.add('qx-actif'), pas * i + 200);
+      setTimeout(() => { li.classList.remove('qx-actif'); li.classList.add('qx-fait'); }, pas * (i + 1) + 200);
     });
-    setTimeout(() => fin(true), pas * (lignes.length + 1) + 150);
+    // la jauge monte avec les lignes, le chiffre suit
+    const jauge = zone.querySelector('.qx-jauge i'), chiffre = zone.querySelector('.qx-jauge b'), t0 = performance.now(), duree = total - 300;
+    const tic = () => {
+      const k = Math.min(1, (performance.now() - t0) / duree), v = Math.round(100 * (1 - Math.pow(1 - k, 1.6)));
+      jauge.style.width = v + '%'; chiffre.textContent = v + ' %';
+      if (k < 1 && zone.contains(jauge)) setTimeout(tic, 40);
+    };
+    tic();
+    setTimeout(() => fin(true), total);
   }
 
   const reseau = ctx.source === 'tiktok' ? 'TikTok' : 'Instagram';
@@ -301,29 +321,44 @@
     racine.querySelector('.qx-barre').classList.add('qx-cache');
     racine.querySelector('.qx-etape').classList.add('qx-cache');
     relancerAnimation();
+    // Fin en mode nuit : toute la page sur la page bio, la carte seule sur une page ressource (la ressource reste claire)
+    racine.classList.add('qx-nuit');
+    if (TYPE === 'claude') nuit(true);
     const offre = p === 'contenu' || p === 'lancement';
-    let html = offre ? `<div class="qx-badge">Ton profil correspond à notre accompagnement</div>`
+    // Un profil nommé d'après le rythme sur les réseaux : la personne se reconnaît avant de lire l'offre
+    const PROFILS = {
+      souvent: ['Créateur régulier', 'Tu postes déjà souvent : on te rend les heures que ça te prend.'],
+      parfois: ['Créateur pressé', 'Tu as des choses à dire, pas le temps de tout faire : c\'est exactement ce qu\'on automatise.'],
+      pas_encore: ['Créateur en devenir', 'Tout est à lancer : on monte ta création de contenu avec toi.'],
+    };
+    const [nom, phrase] = PROFILS[rep.reseaux] || PROFILS.parfois;
+    let html = offre ? `<div class="qx-badge"><span>Ton profil</span><b>${nom}</b></div>`
       : `<div class="qx-ok">C'est noté, merci pour tes réponses</div>`;
 
     if (offre) {
-      const freins = (rep.freins || []).map(f => (Q.freins.choix.find(x => x[0] === f) || [])[3]).filter(Boolean);
-      const recap = freins.length ? `<p class="qx-recap"><b>Ce qu'on regarde en premier pour toi :</b> ${freins.join(', ')}.</p>` : '';
       const appel = CONFIG.CALENDLY + (CONFIG.CALENDLY.includes('?') ? '&' : '?') + new URLSearchParams({
         utm_source: 'questionnaire', utm_medium: ctx.source, utm_campaign: ctx.mot_cle || TYPE, utm_term: p, utm_content: session }).toString();
-      const titre = p === 'lancement' ? 'On t\'aide à <span>te rendre visible</span>' : 'On automatise <span>ta création de contenu</span>';
+      // Le plan se colle aux freins cochés : l'étape qui règle un blocage le dit
+      const freins = rep.freins || [];
+      const vise = cles => cles.some(c => freins.includes(c));
       const etapes = [
-        ['1', 'Les idées', 'les sujets qui marchent déjà dans ta niche'],
-        ['2', 'Les scripts', 'écrits pour toi, prêts à tourner'],
-        ['3', 'Le montage', 'tes vidéos montées, prêtes à poster'],
-        ['+', 'Et bien d\'autres', '(carrousels, stories, posts automatiques…) selon ce dont tu as besoin'],
-        ['✓', 'On t\'accompagne', 'jusqu\'à ce que tu sois visible avec ton activité et à l\'aise avec ces automatisations'],
+        ['1', 'Les idées', 'Les sujets qui marchent déjà dans ta niche, trouvés pour toi.', vise(['idees', 'vues'])],
+        ['2', 'Les scripts', 'Écrits pour toi, avec ta façon de parler, prêts à tourner.', vise(['scripts', 'camera'])],
+        ['3', 'Le montage', 'Tes vidéos montées, prêtes à poster.', vise(['montage', 'rythme'])],
       ];
-      html += `<div class="qx-cta"><h2 class="qx-h2">${titre}</h2>
-        <p>On installe sur ton Claude la méthode qu'on utilise pour nos propres vidéos :</p>
-        <ol class="qx-plan">${etapes.map(([n, t, d], k) => `<li style="--i:${k}"><i>${n}</i><span><b>${t}</b> ${d}</span></li>`).join('')}</ol>
-        ${recap}
-        <p>En appel, on regarde <em>ta situation</em> et si on est les bons pour t'aider.</p>
-        <a class="qx-wa qx-appel" data-clic="appel" href="${appel}" target="_blank" rel="noopener">📅 Je réserve mon appel</a>
+      html += `<div class="qx-cta">
+        <h2 class="qx-h2">On automatise <span>ta création de contenu</span></h2>
+        <p class="qx-objectif"><i>🎯</i><span>Objectif : <b>être visible sur les réseaux</b></span></p>
+        <p class="qx-phrase">${phrase}</p>
+        <ol class="qx-plan">${etapes.map(([n, t, d, cible], k) => `<li style="--i:${k}" class="${cible ? 'qx-cible' : ''}"><i>${n}</i><span><b>${t}${cible ? '<small>ton blocage</small>' : ''}</b>${d}</span></li>`).join('')}</ol>
+        <ul class="qx-plus">
+          <li><i>+</i><span><b>Et bien d'autres</b> (carrousels, stories, posts automatiques…) selon ce dont tu as besoin</span></li>
+          <li><i>✓</i><span><b>On t'accompagne</b> jusqu'à ce que tu sois visible avec ton activité et à l'aise avec ces automatisations</span></li>
+        </ul>
+        <p class="qx-methode">Tout tourne sur <b>ton</b> Claude, avec la méthode qu'on utilise pour nos propres vidéos.</p>
+        <div class="qx-humain"><img src="${PHOTO}" alt="" width="34" height="34"><p>En appel, on regarde <em>ta situation</em> et si on est les bons pour t'aider. Tu parles directement à Pablo ou Lucas.</p></div>
+        <a class="qx-wa qx-appel" data-clic="appel" href="${appel}" target="_blank" rel="noopener"><span>Réserver mon appel</span><i aria-hidden="true">→</i></a>
+        <p class="qx-sous-cta">30 min en visio · sans engagement</p>
         <div class="qx-timide"><p>Pas envie d'un appel ? Une question ? Écris-nous <b>CRÉATION</b> en DM, on te répond directement.</p>
         ${boutonDm('CRÉATION', 'dm_creation', false)}</div></div>`;
     } else if (p === 'surmesure') {
@@ -358,11 +393,24 @@
     if (refaire) refaire.onclick = () => {
       oublier(); Object.keys(rep).forEach(k => delete rep[k]); MULTI.forEach(id => { rep[id] = []; });
       pile.length = 0; reaction = '';
+      racine.classList.remove('qx-nuit'); nuit(false);
       if (!qs.get('c')) ctx.commentateur = null;
       caches.forEach(el => el.classList.add('qx-cache'));
       afficher('priorite');
     };
     remonter();
+  }
+
+  // Fond noir avec une lueur orange, posé sous la page (la grille claire reste dessous, invisible)
+  let fondNuit = null;
+  const couleurTheme = document.querySelector('meta[name="theme-color"]'), themeJour = couleurTheme && couleurTheme.content;
+  function nuit(on) {
+    if (on && !fondNuit) {
+      fondNuit = document.createElement('div'); fondNuit.className = 'qx-nuit-fond'; fondNuit.setAttribute('aria-hidden', 'true');
+      document.body.insertBefore(fondNuit, document.body.firstChild);
+    }
+    document.documentElement.classList.toggle('qx-nuit-page', on);
+    if (couleurTheme) couleurTheme.content = on ? '#0d0907' : themeJour;
   }
 
   function reveler() {
